@@ -1,0 +1,109 @@
+<div class="employee-form-container">
+  <h2>
+    @if (isEditMode) {
+      Edit Employee
+    } @else {
+      Create New Employee
+    }
+  </h2>
+
+  @if (loadingEmployee) {
+    <div class="alert alert-info">Loading employee...</div>
+  }
+
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="employee-form">
+    <!-- Name Field -->
+    <div class="form-group">
+      <label for="name">Name <span class="required">*</span></label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        [class.error]="name?.invalid && name?.touched"
+        placeholder="Enter employee name"
+      />
+      @if (name?.invalid && name?.touched) {
+        <span class="error-message">Name is required</span>
+      }
+    </div>
+
+    <div>
+      <div class="form-group">
+        <label for="code">Code <span class="required">*</span></label>
+        <input
+          type="text"
+          id="code"
+          formControlName="code"
+          class="form-control"
+          [class.error]="code?.invalid && code?.touched"
+          placeholder="Enter employee code"
+          maxlength="4"
+          (input)="onCodeInput($event)"
+        />
+        @if (code?.invalid && code?.touched) {
+          <span class="error-message">Code is required (max 4 characters)</span>
+        }
+      </div>
+
+      <!-- Created By Field -->
+      <div class="form-group">
+        <label for="createdBy">Created By <span class="required">*</span></label>
+        <input
+          type="text"
+          id="createdBy"
+          formControlName="createdBy"
+          class="form-control"
+          [class.error]="createdBy?.invalid && createdBy?.touched"
+          placeholder="Enter creator name"
+        />
+        @if (createdBy?.invalid && createdBy?.touched) {
+          <span class="error-message">Created by is required</span>
+        }
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="flex">
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || loadingEmployee"
+        >
+          @if (loading) {
+            @if (isEditMode) {
+              <span>Saving...</span>
+            } @else {
+              <span>Creating...</span>
+            }
+          } @else {
+            @if (isEditMode) {
+              <span>Save Changes</span>
+            } @else {
+              <span>Create Employee</span>
+            }
+          }
+        </button>
+      </div>
+    </div>
+    
+  </form>
+</div>

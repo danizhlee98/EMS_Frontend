@@ -1,0 +1,65 @@
+<div class="employee-table-container">
+  <div class="header">
+    <h2>Employees</h2>
+    <button class="btn btn-primary" type="button" (click)="goToCreate()">Add Employee</button>
+  </div>
+
+  @if (loading) {
+    <div class="alert alert-info">Loading employees...</div>
+  } @else {
+    @if (errorMessage) {
+      <div class="alert alert-error">{{ errorMessage }}</div>
+    } @else {
+      @if (employees.length === 0) {
+        <div class="empty-state">No employees found.</div>
+      } @else {
+        <div class="table-wrapper">
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Updated Date</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (employee of employees; track employee.id) {
+                <tr>
+                  <td>{{ employee.id }}</td>
+                  <td>{{ employee.name }}</td>
+                  <td>{{ employee.code }}</td>
+                  <td>{{ employee.createdBy }}</td>
+                  <td>{{ formatDate(employee.createdDate) }}</td>
+                  <td>
+                    @if (employee.updatedDate) {
+                      {{ formatDate(employee.updatedDate) }}
+                    } @else {
+                      <span class="muted">—</span>
+                    }
+                  </td>
+                  <td class="actions-col">
+                    <button class="btn btn-secondary" type="button" (click)="editEmployee(employee)">
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger"
+                      type="button"
+                      (click)="deleteEmployee(employee)"
+                      title="Delete"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>                  
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  }
+</div>
